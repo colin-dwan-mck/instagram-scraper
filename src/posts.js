@@ -159,7 +159,6 @@ const scrapePosts = async (page, request, itemSpec, entryData) => {
         await finiteScroll(itemSpec, page, request, posts);
     }
 
-    var postTime = new Date(parseInt(item.node.taken_at_timestamp) * 1000);
     const output = posts[itemSpec.id].map((item, index) => ({
         '#debug': {
             ...Apify.utils.createRequestDebugInfo(request),
@@ -174,7 +173,7 @@ const scrapePosts = async (page, request, itemSpec, entryData) => {
         likesCount: item.node.edge_media_preview_like.count,
         //imageUrl: item.node.display_url,
         firstComment: item.node.edge_media_to_caption.edges[0] && item.node.edge_media_to_caption.edges[0].node.text,
-        timestamp: postTime.toDateString(),
+        timestamp: new Date(parseInt(item.node.taken_at_timestamp) * 1000).toDateString(),
         //locationName: item.node.location && item.node.location.name || null,
         //ownerUsername: item.node.owner && item.node.owner.username || null,
     })).slice(0, request.userData.limit);
